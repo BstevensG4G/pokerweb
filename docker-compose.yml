@@ -1,0 +1,42 @@
+services:
+  pgdb:
+    container_name: pgdb_container
+    image: postgres:13
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_LISTEN_PORT: 5433
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      PGADMIN_CONFIG_UPGRADE_CHECK_ENABLED: "False"
+    ports:
+      - "5433:5433"
+    depends_on:
+      - pgdb
+
+  pokerweb:
+    container_name: pokerweb_container
+    image: pokerweb:latest
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - pgdb
+    volumes:
+      - ./pokerweb:/pokerweb
+volumes:
+  pgdata:
