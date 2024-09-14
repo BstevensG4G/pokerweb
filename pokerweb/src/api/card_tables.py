@@ -11,3 +11,8 @@ def index():
         result.append(table.serialize()) # build list of Tweets as dictionaries
     return jsonify(result) # return JSON response
     
+
+@bp_card_tables.route('/<int:id>', methods=['GET'])
+def show(id: int):
+    table = CardTable.query.get_or_404(id)
+    return jsonify(table.serialize())

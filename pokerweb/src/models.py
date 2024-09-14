@@ -16,21 +16,26 @@ class Player(db.Model):
     table_stakes = db.Column(db.Integer)
     current_bet = db.Column(db.Integer)
 
-    def __init__(self, name: str, email: str, password: str, sex: str):
+    def __init__(self, name: str, email: str, password: str, sex: str, bankroll: int):
         self.name = name
         self.email = email
         self.password = password
         self.sex = sex
+        self.bankroll = bankroll
 
     def serialize(self):
         return {
+            'id': self.id,
             'name': self.name,
             'email': self.email,
-            'sex': self.sex
-            
+            'sex': self.sex,
+            'hand': self.hand,
+            'bankroll': self.bankroll,
+            'table_stakes': self.table_stakes,
+            'current_bet': self.current_bet
         }
 
-playing = db.Table(
+Playing = db.Table(
     'playing',
     db.Column(
         'player_id', db.Integer,
@@ -67,14 +72,17 @@ class CardTable(db.Model):
         self.max_stake = max_stake
         self.game_type = game_type
 
+
     def serialize(self):
         return {
+            'id': self.id,
             'pot_amount': self.pot_amount,
             'min_stake': self.min_stake,
             'max_stake': self.max_stake,
-            'game_type': self.game_type
-            
-        }
+            'hole_cards': self.hole_cards,
+            'game_type': self.game_type,
+            'is_girls_only': self.is_girls_only
+        }    
 
 class Dealer(db.Model):
     __tablename__ = 'dealers'
@@ -88,6 +96,8 @@ class Dealer(db.Model):
 
     def serialize(self):
         return {
+            'id': self.id,
             'name': self.name,
             'deck_id': self.deck_id            
         }
+        

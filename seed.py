@@ -58,8 +58,9 @@ def main():
     for _ in range(TABLE_COUNT):
         last_table = CardTable(
             pot_amount=random.randint(1,1500),
-            game_type=fake.unique.name().lower(),
-
+            min_stake=1500,
+            max_stake=15000,
+            game_type=fake.unique.name().lower()
         )
         db.session.add(last_table)
 
