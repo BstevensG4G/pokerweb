@@ -67,7 +67,7 @@ def update(id: int):
     player.password=scramble(request.json['password'])
     if 'name' in request.json:
         player.name=request.json['name']
-    if 'bankroll' in request.json:
+    elif 'bankroll' in request.json:
         player.bankroll=request.json['bankroll']
     elif 'sex' in request.json:
         player.bankroll=request.json['sex']        
